@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>AgriAlert · Blue Claymorphism</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #EFF5FC;  /* soft blue-white background */
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      padding: 0;
+    }
+
+    /* Claymorphism core styles - blue/white palette */
+    .wrap {
+      background: #EFF5FC;
+      padding: 32px 20px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* remove orbs */
+    .orb1, .orb2, .orb3 {
+      display: none;
+    }
+
+    .section-lbl {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: #4A7C9C;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      margin-top: 32px;
+      font-weight: 600;
+      background: #E1EDF7;
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+    .section-lbl:first-child {
+      margin-top: 0;
+    }
+
+    .row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* Phone frame – clay extruded */
+    .phone {
+      width: 195px;
+      flex-shrink: 0;
+    }
+    .phone-frame {
+      background: #FFFFFF;
+      border-radius: 48px;
+      padding: 10px;
+      box-shadow: 8px 8px 16px rgba(0, 20, 40, 0.08), -4px -4px 12px rgba(255, 255, 255, 0.8), inset 1px 1px 0px rgba(255,255,255,0.9);
+      transition: transform 0.2s ease;
+    }
+    .phone-frame:hover {
+      transform: translateY(-3px);
+    }
+    .phone-inner {
+      border-radius: 36px;
+      overflow: hidden;
+      background: #FFFFFF;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02), 0 4px 8px rgba(0,0,0,0.02);
+    }
+
+    /* Status bar */
+    .status {
+      background: #FFFFFF;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #E9F0F5;
+    }
+    .status span {
+      color: #4A627A;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .screen-lbl {
+      font-size: 10px;
+      color: #6A8DAE;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 500;
+      background: #E1EDF7;
+      display: inline-block;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 2px 12px;
+      border-radius: 50px;
+    }
+
+    /* Cards – white clay */
+    .glass, .glass-strong, .glass-dark, .card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      border: none;
+      box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.05), -3px -3px 8px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .card {
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    /* Header */
+    .hdr {
+      background: #FFFFFF;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #E9F0F5;
+    }
+    .hdr-title {
+      color: #1E3A5F;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    .hdr-sub {
+      color: #6A8DAE;
+      font-size: 10px;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* Typography */
+    .t-white { color: #1E3A5F; }
+    .t-sky { color: #3A82B9; }
+    .t-muted { color: #8EACCC; font-size: 10px; }
+    .t-sm { font-size: 12px; color: #2C4C6E; font-weight: 500; }
+    .t-xs { font-size: 10px; color: #6A8DAE; }
+    .fw6 { font-weight: 700; }
+    .fw5 { font-weight: 500; }
+
+    /* Buttons – clay blue */
+    .btn-glass, .btn-ghost, .btn-danger {
+      border-radius: 60px;
+      padding: 10px 12px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      cursor: default;
+      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.05), -2px -2px 5px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255,255,255,0.5);
+      border: none;
+    }
+    .btn-glass {
+      background: #E6F0FA;
+      color: #2C6E9E;
+    }
+    .btn-ghost {
+      background: #F4F9FF;
+      color: #5A7F9E;
+    }
+    .btn-danger {
+      background: #FDE9E7;
+      color: #C25E5A;
+    }
+
+    /* Fields – inset clay */
+    .field {
+      background: #F4F9FF;
+      border-radius: 24px;
+      padding: 8px 14px;
+      margin-bottom: 12px;
+      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.03), inset -2px -2px 4px rgba(255, 255, 255, 0.7), 0 1px 0 rgba(255,255,255,0.3);
+      border: none;
+    }
+    .field-lbl {
+      font-size: 9px;
+      color: #6A8DAE;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .field-val, .field-ph {
+      font-size: 12px;
+      color: #2C4C6E;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .field-ph {
+      color: #9AB9D4;
+    }
+
+    /* Badges – blue/white clay */
+    .badge {
+      display: inline-block;
+      border-radius: 40px;
+      padding: 3px 12px;
+      font-size: 9px;
+      font-weight: 700;
+      background: #FFFFFF;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.05);
+      border: none;
+    }
+    .b-amber { background: #FFF3E0; color: #B86F2C; }
+    .b-blue { background: #E6F0FA; color: #2C6E9E; }
+    .b-white { background: #F4F9FF; color: #5A7F9E; }
+    .b-purple { background: #EFE6FA; color: #6E5F9E; }
+    .b-red { background: #FDE9E7; color: #C25E5A; }
+
+    /* Alert card */
+    .alert-glass {
+      background: #F0F7FE;
+      border-radius: 24px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 3px 3px 8px rgba(0,0,0,0.03);
+    }
+    .alert-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #C25E5A;
+    }
+    .alert-sub {
+      font-size: 9px;
+      color: #8CABCA;
+      margin-top: 2px;
+    }
+
+    .div {
+      height: 1px;
+      background: #E9F0F5;
+      margin: 10px 0;
+    }
+
+    /* Avatar */
+    .av {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #E6F0FA;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 2px 2px 4px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #2C6E9E;
+    }
+
+    /* Stats */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .stat {
+      background: #F4F9FF;
+      border-radius: 26px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 3px 3px 8px rgba(0,0,0,0.03);
+    }
+    .stat-n {
+      font-size: 22px;
+      font-weight: 800;
+      color: #2C6E9E;
+    }
+    .stat-l {
+      font-size: 9px;
+      color: #6A8DAE;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* Bottom nav */
+    .nav {
+      background: #FFFFFF;
+      border-top: 1px solid #E9F0F5;
+      padding: 8px 12px 6px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .nav-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 16px;
+      background: #F4F9FF;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), 2px 2px 4px rgba(0,0,0,0.05);
+    }
+    .nav-dot-active {
+      background: #E6F0FA;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), 2px 2px 5px rgba(0,0,0,0.05);
+    }
+    .nav-dot-inactive {
+      background: #F4F9FF;
+    }
+    .nav-lbl, .nav-lbl-a {
+      font-size: 8px;
+      font-weight: 600;
+    }
+    .nav-lbl {
+      color: #9AB9D4;
+    }
+    .nav-lbl-a {
+      color: #2C6E9E;
+    }
+
+    /* Photo grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .photo-box, .photo-box-filled {
+      background: #F4F9FF;
+      border-radius: 20px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), 3px 3px 6px rgba(0,0,0,0.03);
+    }
+    .photo-box-filled {
+      background: #E6F0FA;
+    }
+
+    /* Map clay */
+    .map {
+      background: #E9F0F5;
+      border-radius: 28px;
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 4px 4px 10px rgba(0,0,0,0.03);
+    }
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(#C8DCF0 1px, transparent 1px), linear-gradient(90deg, #C8DCF0 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.4;
+    }
+    .pin {
+      position: absolute;
+      top: 28px;
+      left: 78px;
+      width: 18px;
+      height: 18px;
+      background: #2C6E9E;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .pin::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      top: 5px;
+      left: 5px;
+    }
+
+    /* Splash screen */
+    .splash {
+      background: #FFFFFF;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .logo-ring {
+      width: 74px;
+      height: 74px;
+      border-radius: 28px;
+      background: #E6F0FA;
+      box-shadow: 5px 5px 12px rgba(0,0,0,0.05), -4px -4px 10px rgba(255,255,255,0.6), inset 0 1px 0 rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .glow-line {
+      height: 2px;
+      background: #D6E5F2;
+      border-radius: 4px;
+      width: 60px;
+      margin: 12px auto;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="section-lbl">Onboarding</div>
+  <div class="row">
+
+    <!-- Splash screen - AgriAlert blue clay -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="splash">
+            <div class="logo-ring">
+              <svg width="40" height="40" viewBox="0 0 36 36" fill="none">
+                <ellipse cx="18" cy="23" rx="11" ry="8" fill="#B8D4F0" opacity="0.8"/>
+                <ellipse cx="18" cy="20" rx="8" ry="6" fill="#5A9BCB" opacity="0.8"/>
+                <circle cx="24" cy="11" r="5" fill="#2C6E9E" opacity="0.8"/>
+                <circle cx="11" cy="14" r="4" fill="#8CB3D3" opacity="0.7"/>
+              </svg>
+            </div>
+            <div style="color:#1E3A5F;font-size:22px;font-weight:800;letter-spacing:-0.5px">AgriAlert</div>
+            <div style="color:#6A8DAE;font-size:10px;margin-top:5px;">Livestock care · Lesotho</div>
+            <div class="glow-line"></div>
+            <div style="color:#9AB9D4;font-size:9px;margin-top:16px">Loading...</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Splash</div>
+    </div>
+
+    <!-- Login screen -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div style="padding:20px 16px;">
+            <div style="margin-bottom:20px;">
+              <div style="font-size:20px;font-weight:800;color:#1E3A5F;">Welcome back</div>
+              <div style="font-size:11px;color:#6A8DAE;margin-top:4px;">Sign in to continue</div>
+            </div>
+            <div class="field"><div class="field-lbl">Email</div><div class="field-val">farmer@agrialert.ls</div></div>
+            <div class="field"><div class="field-lbl">Password</div><div class="field-ph">••••••••</div></div>
+            <div style="font-size:10px;color:#2C6E9E;text-align:right;margin-bottom:16px;font-weight:600;">Forgot password?</div>
+            <div class="btn-glass">Sign in</div>
+            <div class="glow-line"></div>
+            <div class="btn-ghost">Create account</div>
+            <div style="font-size:9px;color:#9AB9D4;text-align:center;margin-top:12px;">Farmers · Vet officers · Admins</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Login</div>
+    </div>
+
+    <!-- Register screen -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div style="padding:16px;">
+            <div style="font-size:16px;font-weight:800;color:#1E3A5F;margin-bottom:14px;">Create account</div>
+            <div class="field"><div class="field-lbl">Full name</div><div class="field-ph">Enter full name</div></div>
+            <div class="field"><div class="field-lbl">Email address</div><div class="field-ph">Enter email</div></div>
+            <div class="field"><div class="field-lbl">Phone</div><div class="field-ph">+266 xxxxxxx</div></div>
+            <div class="field"><div class="field-lbl">Role</div><div class="field-val" style="color:#2C6E9E">Farmer ▾</div></div>
+            <div class="field"><div class="field-lbl">District</div><div class="field-ph">Select district</div></div>
+            <div class="field"><div class="field-lbl">Password</div><div class="field-ph">Create password</div></div>
+            <div class="btn-glass" style="margin-top:10px;">Register</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Register</div>
+    </div>
+  </div>
+
+  <!-- FARMER SCREENS -->
+  <div class="section-lbl">Farmer screens</div>
+  <div class="row">
+    <!-- Farmer dashboard -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1"><div class="hdr-title">AgriAlert</div><div class="hdr-sub">Good morning, Thabo</div></div>
+              <div class="av">TM</div>
+            </div>
+          </div>
+          <div style="padding:12px;">
+            <div class="alert-glass"><div class="alert-title">⚠ Disease alert nearby</div><div class="alert-sub">FMD reported · Leribe district</div></div>
+            <div class="stat-grid">
+              <div class="stat"><div class="stat-n">4</div><div class="stat-l">My reports</div></div>
+              <div class="stat"><div class="stat-n" style="color:#C25E5A;">1</div><div class="stat-l">Pending</div></div>
+            </div>
+            <div class="btn-glass">+ Report sick animal</div>
+            <div class="btn-ghost">View my reports</div>
+            <div class="glow-line"></div>
+            <div style="font-size:12px;font-weight:700;color:#1E3A5F;margin-bottom:8px;">Recent</div>
+            <div class="card">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="flex:1"><div class="t-sm fw6">Cattle · Fever</div><div class="t-xs" style="margin-top:3px;">3 days ago</div></div>
+                <span class="badge b-blue">Reviewing</span>
+              </div>
+            </div>
+          </div>
+          <div class="nav">
+            <div class="nav-item"><div class="nav-dot nav-dot-active"></div><div class="nav-lbl-a">Home</div></div>
+            <div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Reports</div></div>
+            <div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Alerts</div></div>
+            <div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Farmer dashboard</div>
+    </div>
+
+    <!-- Report form -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div style="display:flex;gap:6px;"><span style="color:#6A8DAE;">←</span><div class="hdr-title">Report sick animal</div></div></div>
+          <div style="padding:12px;">
+            <div class="field"><div class="field-lbl">Animal type</div><div class="field-val" style="color:#2C6E9E">Cattle ▾</div></div>
+            <div class="field"><div class="field-lbl">Animals affected</div><div class="field-val">3</div></div>
+            <div class="field"><div class="field-lbl">Date observed</div><div class="field-val">08 Apr 2026</div></div>
+            <div class="field" style="padding-bottom:32px;"><div class="field-lbl">Symptoms</div><div class="field-ph">High fever, nasal discharge...</div></div>
+            <div style="font-size:9px;font-weight:600;color:#6A8DAE;margin-bottom:6px;">Upload photos</div>
+            <div class="photo-grid">
+              <div class="photo-box-filled">🐄</div>
+              <div class="photo-box">+</div>
+              <div class="photo-box">+</div>
+            </div>
+            <div class="btn-glass">Next: capture location →</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Report form</div>
+    </div>
+
+    <!-- GPS capture -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div style="display:flex;gap:6px;"><span style="color:#6A8DAE;">←</span><div class="hdr-title">Farm location</div></div></div>
+          <div style="padding:12px;">
+            <div class="t-muted" style="margin-bottom:10px;">Tap to capture your GPS location</div>
+            <div class="map"><div class="map-grid"></div><div class="pin"></div><div style="position:absolute;bottom:6px;right:8px;font-size:9px;color:#2C6E9E;font-weight:700;">GPS active</div></div>
+            <div class="card">
+              <div class="t-sm fw6">Captured location</div>
+              <div class="t-xs" style="margin-top:4px;">Lat: -29.3167 · Long: 27.4833</div>
+              <div class="t-xs">Leribe, Lesotho</div>
+            </div>
+            <div class="btn-ghost" style="margin-bottom:8px;">Recapture location</div>
+            <div class="btn-glass">Submit report</div>
+            <div class="t-xs" style="text-align:center;margin-top:10px;">Location shared only with assigned vet</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">GPS capture</div>
+    </div>
+
+    <!-- Report history -->
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div class="hdr-title">My reports</div></div>
+          <div style="padding:12px;">
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Cattle · Fever</div><div class="t-xs">08 Apr · 3 animals</div></div><span class="badge b-blue">Reviewing</span></div><div class="div"></div><div class="t-xs">Vet: Isolate affected animals</div></div>
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Goat · Skin lesions</div><div class="t-xs">02 Apr · 7 animals</div></div><span class="badge b-purple">Visit set</span></div><div class="div"></div><div class="t-xs">Farm visit: 12 Apr at 10:00 AM</div></div>
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Sheep · Respiratory</div><div class="t-xs">18 Mar · 2 animals</div></div><span class="badge b-white">Resolved</span></div></div>
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Poultry · Diarrhea</div><div class="t-xs">10 Mar · 12 animals</div></div><span class="badge b-amber">Pending</span></div></div>
+          </div>
+          <div class="nav"><div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Home</div></div><div class="nav-item"><div class="nav-dot nav-dot-active"></div><div class="nav-lbl-a">Reports</div></div><div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Alerts</div></div><div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Profile</div></div></div>
+        </div>
+      </div>
+      <div class="screen-lbl">Report history</div>
+    </div>
+  </div>
+
+  <!-- VET OFFICER SCREENS -->
+  <div class="section-lbl">Veterinary officer screens</div>
+  <div class="row">
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1"><div class="hdr-title">Vet Dashboard</div><div class="hdr-sub">Dr. Mokhele · Leribe</div></div><div class="av">DM</div></div></div>
+          <div style="padding:12px;">
+            <div class="stat-grid"><div class="stat"><div class="stat-n">12</div><div class="stat-l">Reports</div></div><div class="stat"><div class="stat-n" style="color:#C25E5A;">5</div><div class="stat-l">Need response</div></div></div>
+            <div style="font-size:12px;font-weight:700;color:#1E3A5F;margin-bottom:8px;">Pending reports</div>
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Cattle · Fever</div><div class="t-xs">Thabo M · Leribe · 3 animals</div></div><span class="badge b-red">New</span></div></div>
+            <div class="card"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1"><div class="t-sm fw6">Goat · Lesions</div><div class="t-xs">Palesa K · Berea · 7 animals</div></div><span class="badge b-red">New</span></div></div>
+            <div class="btn-ghost">View all reports</div>
+          </div>
+          <div class="nav"><div class="nav-item"><div class="nav-dot nav-dot-active"></div><div class="nav-lbl-a">Home</div></div><div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Reports</div></div><div class="nav-item"><div class="nav-dot nav-dot-inactive"></div><div class="nav-lbl">Alerts</div></div></div>
+        </div>
+      </div>
+      <div class="screen-lbl">Vet dashboard</div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div style="display:flex;gap:6px;"><span style="color:#6A8DAE;">←</span><div class="hdr-title">Report details</div></div></div>
+          <div style="padding:12px;">
+            <div class="card"><div class="t-sm fw6">Cattle · High fever</div><div class="t-xs" style="margin-top:3px;">Thabo Mokoena · 08 Apr 2026</div><div class="div"></div><div class="t-xs">3 animals. Fever, nasal discharge, loss of appetite since 06 Apr.</div></div>
+            <div class="photo-grid"><div class="photo-box-filled">🐄</div><div class="photo-box-filled">🐄</div><div class="photo-box">–</div></div>
+            <div class="t-xs" style="margin:6px 0;">📍 Leribe · -29.31, 27.48</div>
+            <div class="glow-line"></div>
+            <div style="font-size:12px;font-weight:700;color:#1E3A5F;margin:8px 0 6px;">Your response</div>
+            <div class="field" style="padding-bottom:28px;"><div class="field-ph">Isolate animals. Administer fever meds. Monitor 48hrs...</div></div>
+            <div class="field"><div class="field-lbl">Action</div><div class="field-val" style="color:#2C6E9E">Schedule farm visit ▾</div></div>
+            <div class="btn-glass">Send response</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Vet response</div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div class="hdr-title">Send disease alert</div></div>
+          <div style="padding:12px;">
+            <div class="t-muted" style="margin-bottom:10px;">Alert farmers in a region about a disease outbreak</div>
+            <div class="field"><div class="field-lbl">Disease type</div><div class="field-val" style="color:#2C6E9E">Foot-and-Mouth Disease ▾</div></div>
+            <div class="field"><div class="field-lbl">Target region</div><div class="field-val" style="color:#2C6E9E">Leribe district ▾</div></div>
+            <div class="field"><div class="field-lbl">Severity</div><div class="field-val" style="color:#C25E5A;">High ▾</div></div>
+            <div class="field" style="padding-bottom:26px;"><div class="field-lbl">Alert message</div><div class="field-ph">FMD detected in Leribe. Keep livestock isolated...</div></div>
+            <div class="alert-glass"><div class="alert-title">Preview</div><div class="alert-sub">This will notify 47 farmers in Leribe</div></div>
+            <div class="btn-danger">Send alert to 47 farmers</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Disease alert</div>
+    </div>
+  </div>
+
+  <!-- ADMIN SCREEN -->
+  <div class="section-lbl">Admin screen</div>
+  <div class="row">
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-inner">
+          <div class="status"><span>9:41</span><span>●●●</span></div>
+          <div class="hdr"><div class="hdr-title">Admin Dashboard</div><div class="hdr-sub">System overview</div></div>
+          <div style="padding:12px;">
+            <div class="stat-grid"><div class="stat"><div class="stat-n">134</div><div class="stat-l">Farmers</div></div><div class="stat"><div class="stat-n">12</div><div class="stat-l">Vet officers</div></div></div>
+            <div class="stat-grid"><div class="stat"><div class="stat-n">58</div><div class="stat-l">Reports</div></div><div class="stat"><div class="stat-n" style="color:#C25E5A;">9</div><div class="stat-l">Open cases</div></div></div>
+            <div class="glow-line"></div>
+            <div style="font-size:12px;font-weight:700;color:#1E3A5F;margin-bottom:8px;">Manage</div>
+            <div class="card" style="margin-bottom:8px;"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div class="t-sm fw6">User management</div><div class="t-xs">Activate · deactivate accounts</div></div><div style="color:#2C6E9E;font-size:18px;">›</div></div></div>
+            <div class="card" style="margin-bottom:8px;"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div class="t-sm fw6">All disease reports</div><div class="t-xs">Monitor and filter reports</div></div><div style="color:#2C6E9E;font-size:18px;">›</div></div></div>
+            <div class="card"><div style="display:flex;align-items:center;justify-content:space-between;"><div><div class="t-sm fw6">Send system alert</div><div class="t-xs">Notify all users</div></div><div style="color:#2C6E9E;font-size:18px;">›</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-lbl">Admin dashboard</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
